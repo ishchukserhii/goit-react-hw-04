@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 
 
-const SearchBar = ({onSubmit}) => {
+const SearchBar = ({onSubmit, setPage}) => {
 
   const handleSubmit = (e) => {
 e.preventDefault()
@@ -12,6 +12,7 @@ if(searchValue === ""){
   toast.error("Error")
   return
 }
+setPage(1)
 onSubmit(searchValue); 
 e.target.reset(); 
 }
