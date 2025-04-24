@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import SearchBar from "./SearchBar/SearchBar";
-import axios from "axios";
 import { Api } from "../Search";
 import toast, { ToastBar, Toaster } from "react-hot-toast";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import Loader from "./Loader/Loader";
 import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
+import ErrorMessage from "./ErrorMessage/ErrorMessage";
+import Modal from "react-modal";
+import ImageModal from "./ImageModal/ImageModal";
 
 function App() {
   const [inputText, setInputText] = useState("");
@@ -16,43 +18,61 @@ function App() {
   const [total, setTotal] = useState();
   const [page, setPage] = useState(1);
   const [loadBtn, setLoadBtn] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  Modal.setAppElement("#root");
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const perPage = 12;
 
   useEffect(() => {
     if (inputText === "") {
       return;
     }
-    setIsLoading(!isLoading);
     async function getData() {
       setIsLoading(true);
       try {
-        const data = await Api(
-          inputText,
-          page
-        );
-        setImg(...img, data.results);
+        setError(false);
+        const data = await Api(inputText, page, perPage);
+
+        setImg((img) => {
+          const updatedImg = [...img, ...data.results];
+          if (data.total - updatedImg.length > 0) {
+            setLoadBtn(true);
+          } else {
+            setLoadBtn(false);
+          }
+return updatedImg
+        });
+
         setTotal(data.total);
-        setIsLoading(!isLoading);
+
       } catch {
         setError(true);
-        toast.error("Помилка завантаження");
+        setLoadBtn(false);
       } finally {
         setIsLoading(false);
       }
     }
     getData();
-  }, [inputText]);
-
-  const loadMore = () => {
-    setPage + 1;
-  };
+  }, [inputText, page]);
 
   return (
     <>
       <Toaster />
-      <SearchBar onSubmit={setInputText} setPage={setPage} />
-      <ImageGallery img={img} />
+      <SearchBar onSubmit={setInputText} setPage={setPage} setImg={setImg} />
+      {img.length > 0 && <ImageGallery  img={img} onImageClick={handleImageClick} />}
+      {error && <ErrorMessage />}
       {isLoading && <Loader />}
-      {loadBtn && <LoadMoreBtn setPage={setPage} page={page} />}
+      {img.length > 0 && loadBtn && <LoadMoreBtn setPage={setPage} page={page} />}
+      <ImageModal  isOpen={isModalOpen}
+  onClose={() => setIsModalOpen(false)}
+  imageUrl={selectedImage}/>
     </>
   );
 }

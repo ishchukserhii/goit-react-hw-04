@@ -1,0 +1,11 @@
+.input{
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 12px 12px
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}

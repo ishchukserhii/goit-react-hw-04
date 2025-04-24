@@ -1,9 +1,9 @@
 import React from 'react'
-
-export const ImageCard = ({img, alt}) => {
+import css from "./ImageCard.module.css"
+export const ImageCard = ({img, alt, onClick}) => {
   return (
     <div>
-        <img src={img} alt={alt} /> 
+        <img className={css.cardImg} src={img} alt={alt} onClick={onClick} /> 
     </div>
   )
 }

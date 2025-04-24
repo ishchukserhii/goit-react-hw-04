@@ -1,17 +1,18 @@
 import React from 'react'
 import toast from 'react-hot-toast';
+import css from "./SearchBar.module.css"
 
 
-
-const SearchBar = ({onSubmit, setPage}) => {
+const SearchBar = ({onSubmit, setPage, setImg}) => {
 
   const handleSubmit = (e) => {
 e.preventDefault()
 const searchValue = e.target.elements.searchValue.value.trim();
 if(searchValue === ""){
-  toast.error("Error")
+  toast.error("Error", {position:"top-right"})
   return
 }
+setImg([])
 setPage(1)
 onSubmit(searchValue); 
 e.target.reset(); 
@@ -19,9 +20,10 @@ e.target.reset();
 
   return (
 <header >
-  <form onSubmit={handleSubmit}>
+  <form className={css.container}onSubmit={handleSubmit}>
     <input
-      type="text"
+    className={css.input}      
+    type="text"
       autoComplete="off"
       autoFocus
       placeholder="Search images and photos"
