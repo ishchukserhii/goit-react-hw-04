@@ -15,7 +15,6 @@ function App() {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [img, setImg] = useState([]);
-  const [total, setTotal] = useState();
   const [page, setPage] = useState(1);
   const [loadBtn, setLoadBtn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,9 +48,6 @@ function App() {
           }
 return updatedImg
         });
-
-        setTotal(data.total);
-
       } catch {
         setError(true);
         setLoadBtn(false);
