@@ -58,6 +58,10 @@ return updatedImg
     getData();
   }, [inputText, page]);
 
+  const loadMore = ()=>{
+    setPage(page + 1)
+  }
+
   return (
     <>
       <Toaster />
@@ -65,7 +69,7 @@ return updatedImg
       {img.length > 0 && <ImageGallery  img={img} onImageClick={handleImageClick} />}
       {error && <ErrorMessage />}
       {isLoading && <Loader />}
-      {img.length > 0 && loadBtn && <LoadMoreBtn setPage={setPage} page={page} />}
+      {img.length > 0 && loadBtn && <LoadMoreBtn loadMore={loadMore} />}
       <ImageModal  isOpen={isModalOpen}
   onClose={() => setIsModalOpen(false)}
   imageUrl={selectedImage}/>

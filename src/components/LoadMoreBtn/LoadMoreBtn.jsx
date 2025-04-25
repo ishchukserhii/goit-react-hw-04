@@ -1,9 +1,9 @@
 import React from 'react'
 
-const LoadMoreBtn = ({setPage, page}) => {
+const LoadMoreBtn = ({loadMore}) => {
   
   return (
-    <button onClick={() => setPage(page + 1)}>Load more</button>
+    <button onClick={loadMore}>Load more</button>
   )
 }
 
